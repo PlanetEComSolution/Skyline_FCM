@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Client Name"
+                    android:text="Name"
 
                     style="@style/CustomTextView_title"
 
@@ -76,7 +76,28 @@
                     android:layout_height="wrap_content"
                     style="@style/CustomTextView_text"  />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/list_showFile_rowTopMargin"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="User Type"
+
+                    style="@style/CustomTextView_title"
+
+                    />
+
+                <TextView
+                    android:id="@+id/userType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomTextView_text"  />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,11 +115,11 @@
                     android:id="@+id/mail_Id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="0dp"
+                    android:paddingLeft="4dp"
                     android:text=""
                     android:textStyle="normal"
                     android:layout_weight=".5"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
 

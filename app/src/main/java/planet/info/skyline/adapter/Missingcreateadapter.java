@@ -16,17 +16,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-
 import java.util.List;
 
 //import cn.pedant.SweetAlert.SweetAlertDialog;
 import planet.info.skyline.R;
-import planet.info.skyline.ShowWhatsInside_Activity;
-import planet.info.skyline.Updatecreatelocation;
-import planet.info.skyline.controller.AppController;
+import planet.info.skyline.old_activity.Updatecreatelocation;
 import planet.info.skyline.model.Misingcreate;
-import planet.info.skyline.util.Utility;
 
 public class Missingcreateadapter extends BaseAdapter {
 private Activity activity;

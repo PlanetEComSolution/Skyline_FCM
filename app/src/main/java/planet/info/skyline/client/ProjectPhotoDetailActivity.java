@@ -53,10 +53,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import planet.info.skyline.FullscreenImageView;
-import planet.info.skyline.FullscreenWebView;
+import planet.info.skyline.tech.fullscreenview.FullscreenImageView;
+import planet.info.skyline.tech.fullscreenview.FullscreenWebView;
 import planet.info.skyline.R;
-import planet.info.skyline.controller.AppController;
 import planet.info.skyline.crash_report.ConnectionDetector;
 //import planet.info.skyline.httpimage.HttpImageManager;
 import planet.info.skyline.model.ProjectPhoto;
@@ -64,8 +63,12 @@ import planet.info.skyline.model.ProjectPhotoComment;
 import planet.info.skyline.util.FileDownloader;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_SendMailtoGuestByClient;
+import static planet.info.skyline.network.Api.API_ShowProjectphotosByJobeID;
+import static planet.info.skyline.network.Api.API_UpdateProjectPhotoStatusByClient;
+import static planet.info.skyline.network.Api.API_ViewCommentsByPhoto;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 import static planet.info.skyline.util.Utility.isValidEmail;
 
 public class ProjectPhotoDetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -448,8 +451,8 @@ public class ProjectPhotoDetailActivity extends AppCompatActivity implements Dat
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "UpdateProjectPhotoStatusByClient";
-        final String METHOD_NAME = "UpdateProjectPhotoStatusByClient";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_UpdateProjectPhotoStatusByClient;
+        final String METHOD_NAME = API_UpdateProjectPhotoStatusByClient;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("nu_client_id", Client_id_Pk);
@@ -487,8 +490,8 @@ public class ProjectPhotoDetailActivity extends AppCompatActivity implements Dat
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "SendMailtoGuestByClient";
-        final String METHOD_NAME = "SendMailtoGuestByClient";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_SendMailtoGuestByClient;
+        final String METHOD_NAME = API_SendMailtoGuestByClient;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("jobid", jobID);
@@ -534,8 +537,8 @@ public class ProjectPhotoDetailActivity extends AppCompatActivity implements Dat
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "ShowProjectphotosByJobeID";
-        final String METHOD_NAME = "ShowProjectphotosByJobeID";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ShowProjectphotosByJobeID;
+        final String METHOD_NAME = API_ShowProjectphotosByJobeID;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("jobId", jobID);
         request.addProperty("comp_ID", comp_ID);
@@ -720,8 +723,8 @@ public class ProjectPhotoDetailActivity extends AppCompatActivity implements Dat
         list_ProjectPhotoComment.clear();
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "ViewCommentsByPhoto";
-        final String METHOD_NAME = "ViewCommentsByPhoto";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ViewCommentsByPhoto;
+        final String METHOD_NAME = API_ViewCommentsByPhoto;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("fileID", FileId);
 

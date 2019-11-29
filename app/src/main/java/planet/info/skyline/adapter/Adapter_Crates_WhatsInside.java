@@ -19,7 +19,7 @@ import java.util.List;
 
 
 import planet.info.skyline.R;
-import planet.info.skyline.ShowWhatsInside_Activity;
+import planet.info.skyline.tech.whats_inside.ShowWhatsInside_Activity;
 import planet.info.skyline.util.Utility;
 
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -51,8 +50,8 @@
             android:layout_marginLeft="05dp"
             android:layout_weight="1"
             android:gravity="left"
-            android:padding="3dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,20 +60,20 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/CustomTextView_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Crate Id"
 
-                    style="@style/CustomTextView_title"
+                    android:text="Crate Id"
 
                     />
 
                 <TextView
                     android:id="@+id/createid"
+                    style="@style/CustomTextView_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/CustomTextView_text"  />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -84,17 +83,17 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/CustomTextView_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Description"
-                    style="@style/CustomTextView_title" />
+                    android:text="Description" />
 
                 <TextView
                     android:id="@+id/description"
+                    style="@style/CustomTextView_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/CustomTextView_text"  />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -104,17 +103,17 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/CustomTextView_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Location"
-                    style="@style/CustomTextView_title"/>
+                    android:text="Location" />
 
                 <TextView
                     android:id="@+id/locationss"
+                    style="@style/CustomTextView_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/CustomTextView_text"  />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -123,8 +122,9 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="@dimen/list_showFile_rowTopMargin"
                 android:gravity="left|center_vertical"
-                android:visibility="visible"
-                android:orientation="horizontal">
+
+                android:orientation="horizontal"
+                android:visibility="gone">
 
 
                 <CheckBox

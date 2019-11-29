@@ -50,33 +50,55 @@
         android:roundIcon="@drawable/logo_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".tech.task_plan.CompleteTaskActivity"></activity>
+        <activity android:name=".tech.task_plan.AttachmentListActivity"></activity>
+        <activity android:name=".tech.task_plan.TechnicianListActivity"></activity>
+        <activity android:name=".tech.task_plan.ChecklistActivity"></activity>
+        <activity android:name=".tech.task_plan.CompletedTaskDetailActivity"></activity>
+        <activity android:name=".tech.swo.SwoListActivity"></activity>
+
+        <activity android:name=".tech.task_plan.TaskPlanMainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+
+<!--
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+-->
+
+
+        </activity>
         <activity
-            android:name=".UsageChargesListActivity"
+            android:name=".tech.task_plan.TaskPlanTabActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity
+            android:name=".tech.usage_charges.UsageChargesListActivity"
             android:label="@string/title_activity_usage_charges_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".SelectCompanyActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-
-            />
-<!-- android:theme="@style/MyAppCompatDialogTheme"-->
-<!-- android:theme="@style/Theme.AppCompat.Dialog"-->
-        <activity android:name=".SelectCompanyActivityNew" />
-        <activity android:name=".UsageChargesUpdateActivity" />
-        <!--
-         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        -->
         <activity
-            android:name=".MainActivity"
+            android:name=".tech.choose_job_company.SelectCompanyActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- android:theme="@style/MyAppCompatDialogTheme" -->
+        <!-- android:theme="@style/Theme.AppCompat.Dialog" -->
+        <activity android:name=".tech.usage_charges.UsageChargesUpdateActivity" />
+
+        <activity
+            android:name=".tech.job_files_new.JobFilesTabActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <activity
+            android:name=".home.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -101,88 +123,88 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Exibitpower"
+            android:name=".old_activity.Exibitpower"
             android:configChanges="orientation"
             android:label="@string/title_activity_exibitpower"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LocateCrates"
+            android:name=".tech.locate_crates.LocateCrates"
             android:configChanges="orientation"
             android:label="@string/title_activity_homeact"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Selectmissing"
+            android:name=".old_activity.Selectmissing"
             android:configChanges="orientation"
             android:label="@string/title_activity_selectmissing"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Allmissingcreates"
+            android:name=".old_activity.Allmissingcreates"
             android:configChanges="orientation"
             android:label="@string/title_activity_allmissingcreates"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".home.LoginActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_userregistat"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Updatecreatelocation"
+            android:name=".old_activity.Updatecreatelocation"
             android:configChanges="orientation"
             android:label="@string/title_activity_updatecreatelocation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Foundscaneract"
+            android:name=".old_activity.Foundscaneract"
             android:configChanges="orientation"
             android:label="@string/title_activity_foundscaneract"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SubmitClockTime"
+            android:name=".tech.billable_timesheet.Clock_Submit_Type_Activity"
             android:configChanges="orientation"
             android:label="@string/title_activity_danage_refurbish"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar" /> <!-- android:theme="@style/ThemeNoActionBar" -->
         <activity
-            android:name=".DamagwRubishnewpack"
+            android:name=".old_activity.DamagwRubishnewpack"
             android:configChanges="orientation"
             android:label="@string/title_activity_damagw_rubishnewpack"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Damagerefushchart"
+            android:name=".old_activity.Damagerefushchart"
             android:configChanges="orientation"
             android:label="@string/title_activity_damagerefushchart"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Routinestopingwork"
+            android:name=".old_activity.Routinestopingwork"
             android:configChanges="orientation"
             android:label="@string/title_activity_routinestopingwork"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Rubishcratedataupload"
+            android:name=".old_activity.Rubishcratedataupload"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_rubishcratedataupload"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DamageReport"
+            android:name=".tech.damage_report.DamageReport"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_rubishcratedataupload"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ClientLeavingWithCrate"
+            android:name=".tech.billable_timesheet.ClientLeavingWithCrate"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".NonBillable_jobs"
+            android:name=".tech.non_billable_timesheet.NonBillable_jobs"
             android:configChanges="orientation"
             android:label="@string/title_activity_danage_refurbish"
             android:launchMode="singleTask"
@@ -190,49 +212,58 @@
             android:theme="@style/ThemeNoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Scanforworkstation"
+            android:name=".tech.billable_timesheet.SubmitTimesheet"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_scanforworkstation"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar" />
         <activity
-            android:name=".Scanworklocationstart"
+            android:name=".old_activity.Scanworklocationstart"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_scanworklocationstart"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SlotMoveactivity"
+            android:name=".tech.material_move.SlotMoveactivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_slot_moveactivity"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar" />
         <activity
-            android:name=".Upload_image_and_cooment"
+            android:name=".tech.upload_photo.Upload_image_and_cooment_New"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_upload_image_and_cooment"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeNoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden" /> <!-- android:windowSoftInputMode="stateVisible|adjustPan" -->
         <activity
-            android:name=".Upload_at_any_page"
+            android:name=".tech.upload_photo.Upload_image_and_cooment"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_upload_image_and_cooment"
+            android:screenOrientation="portrait"
+            android:theme="@style/ThemeNoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" /> <!-- android:windowSoftInputMode="stateVisible|adjustPan" -->
+
+
+        <activity
+            android:name=".old_activity.Upload_at_any_page"
             android:configChanges="orientation"
             android:label="@string/title_activity_upload_at_any_page"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Show_Jobs_Activity"
+            android:name=".tech.job_files_old.Show_Jobs_Activity"
             android:configChanges="orientation"
             android:label="@string/title_activity_show__jobs_" />
         <activity
-            android:name=".webViewActivity"
+            android:name=".old_activity.webViewActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_web_view"
             android:theme="@style/ThemeNoActionBar" />
         <activity
-            android:name=".NonBillable_List_Activity"
+            android:name=".old_activity.NonBillable_List_Activity"
             android:configChanges="orientation"
             android:label=" " />
         <activity
-            android:name=".Packing_Activity"
+            android:name=".old_activity.Packing_Activity"
             android:configChanges="orientation"
             android:label="@string/title_activity_packing_" />
 
@@ -258,20 +289,20 @@
                  android:resource="@xml/provider_paths" />
          </provider>
         -->
-        <activity android:name=".Show_Jobs_Activity_New" />
+        <activity android:name=".tech.job_files_old.Show_Jobs_Activity_New" />
         <activity
-            android:name=".SharePhotosToClientActivity"
+            android:name=".tech.job_files_new.SharePhotosToClientActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ShowWhatsInside_Activity" />
-        <activity android:name=".ShowWhatsInside_MainActivity" />
-        <activity android:name=".ShowWhatsInside_sub" /> <!-- <activity android:name="com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity"></activity> -->
+        <activity android:name=".tech.whats_inside.ShowWhatsInside_Activity" />
+        <activity android:name=".tech.whats_inside.ShowWhatsInside_MainActivity" />
+        <activity android:name=".tech.whats_inside.ShowWhatsInside_sub" /> <!-- <activity android:name="com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity"></activity> -->
         <activity
-            android:name=".FullscreenImageView"
+            android:name=".tech.fullscreenview.FullscreenImageView"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
             android:theme="@style/ThemeNoActionBar" />
-        <activity android:name=".ZoomInZoomOut" />
+        <activity android:name=".old_activity.ZoomInZoomOut" />
         <activity
             android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
             android:configChanges="orientation|screenSize"
@@ -291,7 +322,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".home.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/ThemeNoActionBar">
@@ -307,10 +338,6 @@
             android:theme="@style/ThemeNoActionBar" />
         <activity
             android:name=".client.DashboardActivity"
-            android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".Select_Company_job"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -346,17 +373,15 @@
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ProjectFileDetailActivityNonClient"
+            android:name=".tech.job_files_new.ProjectFileDetailActivityNonClient"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".FullscreenWebView"
+            android:name=".tech.fullscreenview.FullscreenWebView"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
             android:theme="@style/ThemeNoActionBar" />
-        <activity android:name=".FullscreenWebViewNew" />
-
-
+        <activity android:name=".tech.fullscreenview.FullscreenWebViewNew" />
         <activity
             android:name=".client.ClientFilesActivity"
             android:screenOrientation="sensorPortrait"
@@ -432,7 +457,7 @@
             android:windowSoftInputMode="adjustPan" />
         -->
         <activity
-            android:name=".TimeSheetList1Activity"
+            android:name=".tech.update_timesheet.TimeSheetList1Activity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
         <activity

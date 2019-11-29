@@ -45,13 +45,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import planet.info.skyline.R;
-import planet.info.skyline.ShowJobFiles_Fragment;
 import planet.info.skyline.crash_report.ConnectionDetector;
 import planet.info.skyline.model.ProjectPhoto;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_ProofRenderByStatus;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 public class DashboardDetailActivity_EP2 extends AppCompatActivity {
 
@@ -127,8 +127,8 @@ public class DashboardDetailActivity_EP2 extends AppCompatActivity {
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "ProofRenderByStatus";
-        final String METHOD_NAME = "ProofRenderByStatus";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ProofRenderByStatus;
+        final String METHOD_NAME =API_ProofRenderByStatus;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("ClientUserID", Client_id_Pk);//

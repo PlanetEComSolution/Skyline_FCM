@@ -35,8 +35,9 @@ import planet.info.skyline.crash_report.ConnectionDetector;
 import planet.info.skyline.model.ClientUserAll;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_GetClientUserListAll;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 public class UserListActivity extends AppCompatActivity {
     ListView listview_Clients;
@@ -114,8 +115,8 @@ public class UserListActivity extends AppCompatActivity {
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "GetClientUserListAll";
-        final String METHOD_NAME = "GetClientUserListAll";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_GetClientUserListAll;
+        final String METHOD_NAME =API_GetClientUserListAll;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("UserID", UserID);
         request.addProperty("CompID", _CompID);
@@ -302,6 +303,8 @@ public class UserListActivity extends AppCompatActivity {
                 holder.imgvw_edit.setVisibility(View.GONE);
                 holder.user_type.setTextColor(getResources().getColor(R.color.main_green_color));
 
+            }else {
+                holder.user_type.setTextColor(getResources().getColor(R.color.primaryTextColor));
             }
 
 

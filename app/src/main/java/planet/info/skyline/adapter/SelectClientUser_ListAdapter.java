@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import planet.info.skyline.R;
 import planet.info.skyline.client.ClientHomeActivity;
-import planet.info.skyline.model.Client;
+import planet.info.skyline.model.ClientModel;
 import planet.info.skyline.util.Utility;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -27,10 +27,10 @@ import static android.content.Context.MODE_PRIVATE;
 public class SelectClientUser_ListAdapter extends BaseAdapter {
     Activity activity;
 
-    ArrayList<Client> list_ClientUser;
+    ArrayList<ClientModel> list_ClientUser;
     SharedPreferences sp;
 
-    public SelectClientUser_ListAdapter(Activity activity, ArrayList<Client> list_ClientUser) {
+    public SelectClientUser_ListAdapter(Activity activity, ArrayList<ClientModel> list_ClientUser) {
         // TODO Auto-generated constructor stub
         this.activity = activity;
 

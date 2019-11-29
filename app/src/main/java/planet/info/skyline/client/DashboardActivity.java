@@ -3,7 +3,6 @@ package planet.info.skyline.client;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -53,16 +52,20 @@ import java.util.Comparator;
 import java.util.List;
 
 import planet.info.skyline.R;
-import planet.info.skyline.ShowJobFiles_Fragment;
 import planet.info.skyline.adapter.CompanyNameAdapter;
 import planet.info.skyline.controller.AppController;
 import planet.info.skyline.crash_report.ConnectionDetector;
 import planet.info.skyline.model.Job;
 import planet.info.skyline.model.Myspinner_timezone;
+import planet.info.skyline.network.Api;
+import planet.info.skyline.network.SOAP_API_Client;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_BindJob;
+import static planet.info.skyline.network.Api.API_ShowClientDashStatus;
+import static planet.info.skyline.network.Api.API_ShowStatus;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 
 public class DashboardActivity extends AppCompatActivity {
@@ -281,8 +284,8 @@ public class DashboardActivity extends AppCompatActivity {
         final String NAMESPACE = KEY_NAMESPACE;
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
         ;
-        final String SOAP_ACTION = KEY_NAMESPACE + "ShowClientDashStatus";
-        final String METHOD_NAME = "ShowClientDashStatus";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ShowClientDashStatus;
+        final String METHOD_NAME = API_ShowClientDashStatus;
         // Create SOAP request
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -332,8 +335,8 @@ public class DashboardActivity extends AppCompatActivity {
         final String NAMESPACE = KEY_NAMESPACE;
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
         ;
-        final String SOAP_ACTION = KEY_NAMESPACE + "ShowStatus";
-        final String METHOD_NAME = "ShowStatus";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ShowStatus;
+        final String METHOD_NAME = API_ShowStatus;
         // Create SOAP request
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -381,7 +384,7 @@ public class DashboardActivity extends AppCompatActivity {
         String client = comp_ID;
         String user = Client_id_Pk;
         String dealer = sp.getString(Utility.CLIENT_LOGIN_DealerID, "");
-        String URL = Utility.URL_EP1 + "/web_service_order_count.php?client=" + client + "&user=" + user + "&dealer=" + dealer;
+        String URL = SOAP_API_Client.URL_EP1 + Api.API_GET_SERVICE_ORDER_COUNT + client + "&user=" + user + "&dealer=" + dealer;
 
         JsonObjectRequest bb = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
@@ -487,8 +490,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "BindJob";
-        final String METHOD_NAME = "BindJob";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_BindJob;
+        final String METHOD_NAME = API_BindJob;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("ClientID", comp_ID);
 

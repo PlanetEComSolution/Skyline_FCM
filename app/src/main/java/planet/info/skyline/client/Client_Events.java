@@ -36,11 +36,11 @@ import java.util.Timer;
 import planet.info.skyline.R;
 import planet.info.skyline.crash_report.ConnectionDetector;
 import planet.info.skyline.model.EventModel;
-import planet.info.skyline.model.ProjectPhoto;
+import planet.info.skyline.network.Api;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -124,8 +124,8 @@ public class Client_Events extends AppCompatActivity {
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "GetClientNotification";
-        final String METHOD_NAME = "GetClientNotification";
+        final String SOAP_ACTION = KEY_NAMESPACE + Api.API_GetClientNotification;;
+        final String METHOD_NAME = Api.API_GetClientNotification;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("ClientUserId", comp_ID);//

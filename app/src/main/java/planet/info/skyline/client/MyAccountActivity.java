@@ -19,10 +19,12 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import planet.info.skyline.R;
 import planet.info.skyline.crash_report.ConnectionDetector;
+import planet.info.skyline.network.SOAP_API_Client;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_GetClientUserInfo;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 public class MyAccountActivity extends AppCompatActivity {
     ProgressDialog progressDoalog;
@@ -128,10 +130,10 @@ public class MyAccountActivity extends AppCompatActivity {
 
         sp = getApplicationContext().getSharedPreferences("skyline", getApplicationContext().MODE_PRIVATE);
         String Client_id = sp.getString(Utility.CLIENT_LOGIN_userID, "");
-        final String NAMESPACE = KEY_NAMESPACE;
+        final String NAMESPACE = SOAP_API_Client. KEY_NAMESPACE;
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "GetClientUserInfo";
-        final String METHOD_NAME = "GetClientUserInfo";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_GetClientUserInfo;
+        final String METHOD_NAME = API_GetClientUserInfo;
         // Create SOAP request
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);

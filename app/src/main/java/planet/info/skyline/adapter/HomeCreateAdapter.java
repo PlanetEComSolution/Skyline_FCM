@@ -13,21 +13,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-
 import java.util.List;
 
 import planet.info.skyline.R;
-import planet.info.skyline.controller.AppController;
 import planet.info.skyline.model.CreateDetails;
-
-import static planet.info.skyline.util.Utility.URL_EP1;
 
 
 public class HomeCreateAdapter extends BaseAdapter {
     Context context;
-    SharedPreferences sp;
-    Editor ed;
+    //SharedPreferences sp;
+    //Editor ed;
     private Activity activity;
     private LayoutInflater inflater;
     private List<CreateDetails> creatmodel;
@@ -35,8 +30,8 @@ public class HomeCreateAdapter extends BaseAdapter {
     public HomeCreateAdapter(Activity act, List<CreateDetails> cr) {
         this.activity = act;
         this.creatmodel = cr;
-        sp = activity.getApplicationContext().getSharedPreferences("skyline", activity.getApplicationContext().MODE_PRIVATE);
-        ed = sp.edit();
+      //  sp = activity.getApplicationContext().getSharedPreferences("skyline", activity.getApplicationContext().MODE_PRIVATE);
+       // ed = sp.edit();
     }
 
     @Override

@@ -35,6 +35,8 @@ import java.util.List;
 import planet.info.skyline.R;
 import planet.info.skyline.controller.AppController;
 import planet.info.skyline.model.OrderStatus;
+import planet.info.skyline.network.Api;
+import planet.info.skyline.network.SOAP_API_Client;
 import planet.info.skyline.util.Utility;
 
 public class DashboardDetailActivity_EP1 extends AppCompatActivity {
@@ -111,7 +113,7 @@ public class DashboardDetailActivity_EP1 extends AppCompatActivity {
         String client = comp_ID;
         String user = Client_id_Pk;
         String dealer = sp.getString(Utility.CLIENT_LOGIN_DealerID, "");
-        String URL = Utility.URL_EP1 + "/web_service_order_list.php?client=" + client + "&user=" + user + "&dealer=" + dealer;
+        String URL = SOAP_API_Client.URL_EP1 + Api.API_GET_ORDER_COUNT + client + "&user=" + user + "&dealer=" + dealer;
 
         JsonObjectRequest bb = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {

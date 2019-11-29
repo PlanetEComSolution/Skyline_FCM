@@ -13,16 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-
 import java.util.List;
 
 import planet.info.skyline.R;
-import planet.info.skyline.Selectmissing;
-import planet.info.skyline.controller.AppController;
+import planet.info.skyline.network.Api;
+import planet.info.skyline.old_activity.Selectmissing;
 import planet.info.skyline.model.Allmissing;
 
-import static planet.info.skyline.util.Utility.URL_EP1;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP1;
 
 
 public class Allmissingadapt extends BaseAdapter {
@@ -33,7 +31,7 @@ private List<Allmissing> creatmodel;
 
 //private ImageLoader imageloader = AppController.getInstance().getImageloader();
 ImageView gomissi;
-String urlforselect=URL_EP1+"/crate_web_service_updates.php?sel=";
+String urlforselect=URL_EP1+ Api.API_UPDATE_CRATE;
 String urlformiss="&mis=";
 //TextView change;
 //LinearLayout change;

@@ -29,23 +29,33 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.ksoap2.serialization.SoapObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,16 +67,22 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
-import planet.info.skyline.NonBillable_jobs;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import planet.info.skyline.R;
-import planet.info.skyline.SubmitClockTime;
 import planet.info.skyline.floating_view.ChatHeadService;
+import planet.info.skyline.model.LaborCode;
 import planet.info.skyline.model.OverlapTimesheet;
 import planet.info.skyline.model.SavedTask;
+import planet.info.skyline.network.Api;
+import planet.info.skyline.tech.billable_timesheet.Clock_Submit_Type_Activity;
+import planet.info.skyline.tech.non_billable_timesheet.NonBillable_jobs;
+import planet.info.skyline.tech.shared_preference.Shared_Preference;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 /**
  * Created by Admin on 2/20/2017.
@@ -74,11 +90,11 @@ import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 public class Utility {
 
-    public static final String TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE = "TimerStartedFromAdminClockModule";
+    // public static final String TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE = "TimerStartedFromAdminClockModule";
     public static final String CLIENT_ID_FOR_NON_BILLABLE = "CLIENT_ID_FOR_NON_BILLABLE";
     public static final String IS_NON_BILLABLE_IN_FRONT = "IS_NONBILLABLE_IN_FRONT";
     public static final int OVERLAY_PERMISSION_REQUEST_CODE = 113;
-    public static final String LOGIN_USER_ROLE = "LOGIN_USER_ROLE";
+
     public static final String SHOW_JOB_FILE_NEW = "SHOW_JOB_FILE_NEW";
     public static final String KEY_CRATE_ID = "KEY_CRATE_ID";
     public static final String KEY_BUNDLE_ELEMENT_1 = "KEY_BUNDLE_ELEMENT_1";
@@ -88,8 +104,8 @@ public class Utility {
     public static final String KEY_BUNDLE_CRATES_1 = "KEY_BUNDLE_CRATES_1";
     public static final String KEY_BUNDLE_CRATES_2 = "KEY_BUNDLE_CRATES_2";
     public static final String KEY_WHATSINSIDE_TAB_ID = "KEY_WHATSINSIDE_TAB_ID";
-    public static final String DEALER_ID = "DEALER_ID";
-    public static final String KEY_PHOTO_UPLOAD_FROM_SAME_MODULE = "MODULE_PHOTO_UPLOAD";
+
+    //  public static final String KEY_PHOTO_UPLOAD_FROM_SAME_MODULE = "MODULE_PHOTO_UPLOAD";
     public static final String KEY_JOB_FILES_FROM_SAME_MODULE = "KEY_JOB_FILES_FROM_SAME_MODULE";
     public static final String KEY_Jobid_or_swoid = "Jobid_or_swoid";
     public static final String KEY_dataa = "dataa";
@@ -100,29 +116,31 @@ public class Utility {
     public static final String KEY_imagename = "imagename";
     public static final String KEY_imagePath = "imagePath";
     public static final String IS_DANAGE_REFURBISH_IN_FRONT = "IS_DANAGE_REFURBISH_IN_FRONT";
-    public static final String TIMER_STARTED_FROM_BILLABLE_MODULE = "TimerStartedFromBillableModule";
+    // public static final String TIMER_STARTED_FROM_BILLABLE_MODULE = "TimerStartedFromBillableModule";
     //public static final String PICTURE_FOR_ITEM = "PICTURE_FOR_ITEM";
     public static final String IMAGE_PATH = "IMAGE_PATH";
     public static final String ITEM_DESC = "ITEM_DESC";
-    public static final String JOB_ID_BILLABLE = "JOB_ID_BILLABLE";
-    public static final String COMPANY_ID_BILLABLE = "COMPANY_ID_BILLABLE";
+    public static final String IS_CHECKLIST_DONE = "IS_CHECKLIST_DONE";
+    public static final Integer REQUEST_CODE_CHECKLIST = 2;
+    public static final Integer REQUEST_CODE_COMPLETED_DATE = 3;
+
     public static final String PAUSED_TIME = "PAUSED_TIME";
-    public static final String KEY_JOB_ID_FOR_JOBFILES = "KEY_JOB_ID_FOR_JOBFILES";
+
     //public static final String KEY_JOB_ID_FOR_JOBFILES = "KEY_JOB_ID_FOR_JOBFILES";
-    public static final String CLOCK_START_TIME = "CLOCK_START_TIME";
-    public static final String FCM_TOKEN = "FCM_TOKEN";
+    // public static final String CLOCK_START_TIME = "CLOCK_START_TIME";
+
     public static final String KEY_IS_EMPTY = "IS_EMPTY";
-    public static final String TIMEGAP_JOB_START_TIME = "TIMEGAP_JOB_START_TIME";
-    public static final String TIMEGAP_JOB_END_TIME = "TIMEGAP_JOB_END_TIME";
-    public static final String TIMEGAP_PREV_JOB_START_TIME = "TIMEGAP_PREV_JOB_START_TIME";
-    public static final String STARTING_BILLABLE_JOB = "STARTING_BILLABLE_JOB";
-    public static final String TIME_SHEET_ID = "TIME_SHEET_ID";
+    // public static final String TIMEGAP_JOB_START_TIME = "TIMEGAP_JOB_START_TIME";
+    // public static final String TIMEGAP_JOB_END_TIME = "TIMEGAP_JOB_END_TIME";
+    // public static final String TIMEGAP_PREV_JOB_START_TIME = "TIMEGAP_PREV_JOB_START_TIME";
+    // public static final String STARTING_BILLABLE_JOB = "STARTING_BILLABLE_JOB";
+    //  public static final String TIME_SHEET_ID = "TIME_SHEET_ID";
     public static final String NO_INTERNET = "Lost Internet!";
     public static final String MSG_OFFLINE_DATA_SAVE = "Do you want to save data offline? This will be submitted when Internet is available.";
     public static final String SAVED = "Saved successfully!";
-    public static final String KEY_INCOMPLETE_ASYNC_ARRAY = "INCOMPLETE_ASYNC_ARRAY";
+    //  public static final String KEY_INCOMPLETE_ASYNC_ARRAY = "INCOMPLETE_ASYNC_ARRAY";
     public static final String KEY_OVERLAP_TIMESHEET_ARRAY = "OVERLAP_TIMESHEET_ARRAY";
-    public static final String KEY_APP_LAUNCHED_FIRST_TIME = "APP_LAUNCHED_FIRST_TIME";
+    //public static final String KEY_APP_LAUNCHED_FIRST_TIME = "APP_LAUNCHED_FIRST_TIME";
     public static final String KEY_IS_LOGIN = "IS_LOGIN";
     public static final String KEY_APP_UPDATE_CHECKED = "APP_UPDATE_CHECKED";
     public static final String KEY_APP_LATEST_VERSION = "APP_LATEST_VERSION";
@@ -134,10 +152,11 @@ public class Utility {
     public static final String USER_ROLE_ARTIST = "6";
     public static final String USER_ROLE_APC = "5";
     public static final String USER_ROLE_TECH = "9";
-
+    public static final int SWO_LIST_REQUEST_CODE = 24459;
 
     public static final String COMP_ID = "COMP_ID";
     public static final String JOB_ID = "JOB_ID";
+
 
     /*********************************CLIENT*******************************************/
 
@@ -154,62 +173,39 @@ public class Utility {
     public static final String CLIENT_LOGIN_dealer_name = "CLIENT_LOGIN_dealer_name";
     public static final String CLIENT_LOGIN_status = "CLIENT_LOGIN_status";
     public static final String CLIENT_LOGIN_Imagepath = "CLIENT_LOGIN_Imagepath";
-
     public static final String CLIENT_LOGIN_Masterstatus = "CLIENT_LOGIN_Masterstatus";
     public static final String LOGIN_TYPE_CLIENT = "LOGIN_TYPE_CLIENT";
     public static final String LOGIN_TYPE_NORMAL = "LOGIN_TYPE_NORMAL";
-
     public static final String LOGIN_TYPE = "LOGIN_TYPE";
-    public static final String OVERLAP_TIME_ENTRY = "OVERLAP_TIME_ENTRY";
-    public static final String USER_TIMESHEET_RIGHT = "USER_TIMESHEET_RIGHT";
 
+
+    public static final String OVERLAP_TIME_ENTRY = "OVERLAP_TIME_ENTRY";
     public static final String PAUSED_JOB = "PAUSED_JOB";
     public static final int CODE_SELECT_COMPANY = 124;
     public static final String KEY_PAUSED_TIMESHEET_ID = "PAUSED_TIMESHEET_ID";
+    public static final String IS_JOB_MANDATORY = "IS_JOB_MANDATORY";
+    public static final String Show_DIALOG_SHOW_INFO = "DIALOG_SHOW_INFO";
     public static final String IS_ADD = "IS_ADD";
     public static final String USAGE_CHARGE_ID = "USAGE_CHARGE_ID";
-    public static final String LOGIN_USERNAME = "LOGIN_USERNAME";
-
-
+    public static final String Method_BillableTimeSheet = Api.API_BILLABLE_TIMESHEET;// Api.API_BILLABLE_TIMESHEET_Tech_Artist;//
     public static final String CLOCK_IN = "Clock In";
     public static final String CLOCK_OUT = "Clock Out";
-    public static final String isFrom_PROJECT_FILE = "sFrom_PROJECT_FILE";
+    public static final String isFrom_PROJECT_FILE = "isFrom_PROJECT_FILE";
     public static final String Client_Mail = "Client_Mail";
     public static final int PROJECT_FILE_GET_CLIENT_MAILS = 222;
+
+    public static final String FROM_CLOCK = "FROM_CLOCK";
+
+    public static final String MISByDailyTime = "41";
+    public static final String EditTime = "42";
+    public static final String EnterTime = "65";
+    public static final String ChangeOrder = "60";
     /**************************************************************************************/
 
     //Method
 
-  // public static final String Method_BILLABLE_TIMESHEET = "timesheet13_Dec";
-    public static final String Method_BILLABLE_TIMESHEET = "timesheet03_April";
-    public static final String Method_NON_BILLABLE_TIMESHEET = "timesheetNonBillable3_Dec";
-    public static final String Method_CHANGE_TIME_CODE_TIMESHEET = "timesheetold3_Dec";
-    public static final String Method_SAVE_USAGE_REPORT = "SaveUsageCharges";
-    public static final String Method_USAGE_REPORT_LIST = "GetUsageCharges";
+    // public static final String API_BILLABLE_TIMESHEET = "timesheet13_Dec";
 
-    public static final String Method_FETCH_PROJECTFILE_FOLDER = "BindProjectFileFolder";
-    public static final String Method_FETCH_PROJECTFILE = "GetrojectFile";
-
-
-
-
-    /********************************************Beta server************************************************/
-    public static final String HEADER = "https://";
-    public static final String URL_EP1 = HEADER + "beta.ep2.businesstowork.com/ep1";
-    public static final String URL_EP2 = HEADER + "beta.ep2.businesstowork.com";
-    public static final String KEY_NAMESPACE = "https://tempuri.org/";
-    /******************************************Live server********************************************/
-   /* public static final String HEADER = "https://";
-    public static final String URL_EP1 = HEADER + "www.exhibitpower2.com/ep1";
-    public static final String URL_EP2 = HEADER + "www.exhibitpower2.com";
-    public static final String KEY_NAMESPACE = "https://tempuri.org/";*/
-    /******************************************dev server 1********************************************/
-  /*  public static final String HEADER = "http://";
-    public static final String URL_EP1 = HEADER + "staging.ep1.businesstowork.com";
-    public static final String URL_EP2 = HEADER + "staging.ep2.businesstowork.com";
-    public static final String KEY_NAMESPACE = "https://tempuri.org/";*/
-
-    /******************************************dev server 1********************************************/
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -221,13 +217,6 @@ public class Utility {
     public static final String IMAGE_EXTENSION = "jpg";
     public static final String VIDEO_EXTENSION = "mp4";
     /**/
-    /**************************************************************************************/
-    public static final String METHOD_BILLABLE_NONBILLABLE_CODE = "bind_code1";
-    public static final String METHOD_MY_SWO = "GetSwoByUserDealer";
-    public static final String METHOD_UNASSIGNED_SWO = "GetSwoByDealer";
-    public static final String METHOD_VENDOR = "GetVendorByDealer";
-    public static final String METHOD_AUTH_USAGE_CHARGE = "GetAuthUsageCharge";
-    /*************************************************************************************/
 
 
     private static final int NOTIFICATION_ID = 9083150;
@@ -342,10 +331,10 @@ public class Utility {
 
     public static void StopRunningClock(Context context) {
 
-        SharedPreferences.Editor ed;
+
         SharedPreferences sp;
         sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-        ed = sp.edit();
+
         try {
             Intent i2 = new Intent(context, ChatHeadService.class);
             context.stopService(i2);
@@ -354,11 +343,15 @@ public class Utility {
         }
 
         try {
-            if (sp.contains(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE)) {
-                ed.putBoolean(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false).apply();//nks
+            if (sp.contains(Shared_Preference.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE)) {
+                // ed.putBoolean(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false).apply();//nks
+                Shared_Preference.setTIMER_STARTED_FROM_ADMIN_CLOCK_MODULE(context, false);
             }
-            if (sp.contains(Utility.TIMER_STARTED_FROM_BILLABLE_MODULE)) {
-                ed.putBoolean(Utility.TIMER_STARTED_FROM_BILLABLE_MODULE, false).apply();//nks
+            if (sp.contains(Shared_Preference.TIMER_STARTED_FROM_BILLABLE_MODULE)) {
+                // ed.putBoolean(Shared_Preference.TIMER_STARTED_FROM_BILLABLE_MODULE, false).apply();//nks
+                Shared_Preference.setTIMER_STARTED_FROM_BILLABLE_MODULE(context, false);
+
+
             }
         } catch (Exception e) {
             e.getMessage();
@@ -374,18 +367,18 @@ public class Utility {
 
     }
 
-    public static String getDealerID(Context context) {
-        SharedPreferences.Editor ed;
-        SharedPreferences sp;
-        sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-        return sp.getString(Utility.DEALER_ID, "");
-    }
-    public static String getUserID(Context context) {
+    /* public static String getDealerID(Context context) {
+         SharedPreferences.Editor ed;
+         SharedPreferences sp;
+         sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
+         return sp.getString(Utility.DEALER_ID, "");
+     }*/
+    /*public static String getUserID(Context context) {
         SharedPreferences.Editor ed;
         SharedPreferences sp;
         sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
         return sp.getString("clientid", "");
-    }
+    }*/
     public static void HideRunningClock(Context context) {
 
         if (isMyServiceRunning(ChatHeadService.class, context)) {
@@ -412,7 +405,7 @@ public class Utility {
         String contentText = "Clock Running...";
 
         if (isClockRunningForBillableTime) {
-            className = SubmitClockTime.class;
+            className = Clock_Submit_Type_Activity.class;
             contentText = "Clock Running for Billable Job";
         } else {
             className = NonBillable_jobs.class;
@@ -517,7 +510,9 @@ public class Utility {
         try {
             SharedPreferences sp;
             sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-            boolean isTimerRunningFromAdminClockModule = sp.getBoolean(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false);
+            //boolean isTimerRunningFromAdminClockModule = sp.getBoolean(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false);
+            boolean isTimerRunningFromAdminClockModule = Shared_Preference.getTIMER_STARTED_FROM_ADMIN_CLOCK_MODULE(context);
+
             if (isTimerRunningFromAdminClockModule) {
 
                 clockRunningForBillableTime = false;
@@ -740,7 +735,10 @@ public class Utility {
         Date CurrentTime = Utility.getCurrentTime();
         SharedPreferences sp;
         sp = context.getSharedPreferences("skyline", MODE_PRIVATE);
-        String sTime = sp.getString(Utility.CLOCK_START_TIME, "");
+        // String sTime = sp.getString(Utility.CLOCK_START_TIME, "");
+
+        String sTime = Shared_Preference.getCLOCK_START_TIME(context);
+
         SimpleDateFormat mdformat = new SimpleDateFormat(Utility.DATE_FORMAT);
         Date startTime = null;
         try {
@@ -757,8 +755,8 @@ public class Utility {
         SharedPreferences sp;
         sp = context.getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
-        ed.putString(Utility.CLOCK_START_TIME, sDate).commit();
-
+        //  ed.putString(Utility.CLOCK_START_TIME, sDate).commit();
+        Shared_Preference.setCLOCK_START_TIME(context, sDate);
     }
 
 
@@ -803,8 +801,12 @@ public class Utility {
         boolean val = false;
 
         SharedPreferences sp = context.getSharedPreferences("skyline", MODE_PRIVATE);
-        String Str_PrevJobEndTime = sp.getString(Utility.TIMEGAP_JOB_END_TIME, "");
-        String Str_NewJobStartTime = sp.getString(Utility.TIMEGAP_JOB_START_TIME, "");
+        //  String Str_PrevJobEndTime = sp.getString(Utility.TIMEGAP_JOB_END_TIME, "");
+        String Str_PrevJobEndTime = Shared_Preference.getTIMEGAP_JOB_END_TIME(context);
+
+
+        //String Str_NewJobStartTime = sp.getString(Utility.TIMEGAP_JOB_START_TIME, "");
+        String Str_NewJobStartTime = Shared_Preference.getTIMEGAP_JOB_START_TIME(context);//dd-MM-yyyy HH:mm:ss
 
         SimpleDateFormat mdformat = new SimpleDateFormat(Utility.DATE_FORMAT);
         Date PrevJobEndTime = null;
@@ -833,9 +835,12 @@ public class Utility {
         long Total_Elapsed_Seconds = 0;
 
         SharedPreferences sp = context.getSharedPreferences("skyline", MODE_PRIVATE);
-        String Str_PrevJobEndTime = sp.getString(Utility.TIMEGAP_JOB_END_TIME, "");
-        String Str_NewJobStartTime = sp.getString(Utility.TIMEGAP_JOB_START_TIME, "");
+        // String Str_PrevJobEndTime = sp.getString(Utility.TIMEGAP_JOB_END_TIME, "");
+        String Str_PrevJobEndTime = Shared_Preference.getTIMEGAP_JOB_END_TIME(context);
 
+
+        //String Str_NewJobStartTime = sp.getString(Utility.TIMEGAP_JOB_START_TIME, "");
+        String Str_NewJobStartTime = Shared_Preference.getTIMEGAP_JOB_START_TIME(context);//dd-MM-yyyy HH:mm:ss
         SimpleDateFormat mdformat = new SimpleDateFormat(Utility.DATE_FORMAT);
         Date PrevJobEndTime = null;
         Date NewJobStartTime = null;
@@ -945,12 +950,15 @@ public class Utility {
         try {
             boolean is_TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE = false;
             boolean is_TIMER_STARTED_FROM_BILLABLE_MODULE = false;
-            if (sp.contains(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE)) {
-                is_TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE = sp.getBoolean(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false);
-            }
-            if (sp.contains(Utility.TIMER_STARTED_FROM_BILLABLE_MODULE)) {
-                is_TIMER_STARTED_FROM_BILLABLE_MODULE = sp.getBoolean(Utility.TIMER_STARTED_FROM_BILLABLE_MODULE, false);
+            if (sp.contains(Shared_Preference.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE)) {
+                // is_TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE = sp.getBoolean(Shared_Preference.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false);
 
+                is_TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE = Shared_Preference.getTIMER_STARTED_FROM_ADMIN_CLOCK_MODULE(context);
+
+            }
+            if (sp.contains(Shared_Preference.TIMER_STARTED_FROM_BILLABLE_MODULE)) {
+                //  is_TIMER_STARTED_FROM_BILLABLE_MODULE = sp.getBoolean(Utility.TIMER_STARTED_FROM_BILLABLE_MODULE, false);
+                is_TIMER_STARTED_FROM_BILLABLE_MODULE = Shared_Preference.getTIMER_STARTED_FROM_BILLABLE_MODULE(context);
             }
 
             if (is_TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE || is_TIMER_STARTED_FROM_BILLABLE_MODULE) {
@@ -1016,8 +1024,7 @@ public class Utility {
         JSONArray jsonArray = new JSONArray();
         JSONObject final_jsonObject = new JSONObject();
 
-        SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
+
         //   timesheetNonBillable{tech_id=28; jobId=605; start_time=11:04; end_time=11:05; description=yyyy; code=21; region=yyyy  (00:01:19); status=3; }
 
         String api_name = api_input.substring(0, api_input.indexOf("{"));
@@ -1044,18 +1051,19 @@ public class Utility {
             e.getCause();
         }
 
-        if (sp.contains(KEY_INCOMPLETE_ASYNC_ARRAY)) {
-            String IncompleteAsyncArray = sp.getString(KEY_INCOMPLETE_ASYNC_ARRAY, "");
+        if (Shared_Preference.containsKey(context, Shared_Preference.KEY_INCOMPLETE_ASYNC_ARRAY)) {
+            String IncompleteAsyncArray = Shared_Preference.getINCOMPLETE_ASYNC_ARRAY(context);
             try {
                 jsonArray = new JSONArray(IncompleteAsyncArray);
                 jsonArray.put(final_jsonObject);
             } catch (Exception e) {
                 e.getCause();
             }
-            ed.putString(KEY_INCOMPLETE_ASYNC_ARRAY, jsonArray.toString()).apply();
+            Shared_Preference.setINCOMPLETE_ASYNC_ARRAY(context, jsonArray.toString());
+
         } else {
             jsonArray.put(final_jsonObject);
-            ed.putString(KEY_INCOMPLETE_ASYNC_ARRAY, jsonArray.toString()).apply();
+            Shared_Preference.setINCOMPLETE_ASYNC_ARRAY(context, jsonArray.toString());
         }
 
         Log.e("AsyncArrAfterAdd", jsonArray.toString());
@@ -1069,8 +1077,9 @@ public class Utility {
         SharedPreferences.Editor ed = sp.edit();
 
 
-        if (sp.contains(KEY_INCOMPLETE_ASYNC_ARRAY)) {
-            String IncompleteAsyncArray = sp.getString(KEY_INCOMPLETE_ASYNC_ARRAY, "");
+        if (sp.contains(Shared_Preference.KEY_INCOMPLETE_ASYNC_ARRAY)) {
+            //  String IncompleteAsyncArray = sp.getString(KEY_INCOMPLETE_ASYNC_ARRAY, "");
+            String IncompleteAsyncArray = Shared_Preference.getINCOMPLETE_ASYNC_ARRAY(context);
             try {
                 jsonArray = new JSONArray(IncompleteAsyncArray);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -1086,7 +1095,8 @@ public class Utility {
             } catch (Exception e) {
                 e.getCause();
             }
-            ed.putString(KEY_INCOMPLETE_ASYNC_ARRAY, jsonArray.toString()).apply();
+            // ed.putString(KEY_INCOMPLETE_ASYNC_ARRAY, jsonArray.toString()).apply();
+            Shared_Preference.setINCOMPLETE_ASYNC_ARRAY(context, jsonArray.toString());
         }
         Log.e("AsyncArrAfterRemove", jsonArray.toString());
     }
@@ -1095,14 +1105,10 @@ public class Utility {
     public static ArrayList<SavedTask> getOfflineTaskList(Context context) {
 
         ArrayList<SavedTask> list = new ArrayList<>();
-
-
         JSONArray jsonArray = new JSONArray();
-        SharedPreferences sp = context.getSharedPreferences("skyline", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-
-        if (sp.contains(Utility.KEY_INCOMPLETE_ASYNC_ARRAY)) {
-            String IncompleteAsyncArray = sp.getString(Utility.KEY_INCOMPLETE_ASYNC_ARRAY, "");
+        if (Shared_Preference.containsKey(context, Shared_Preference.KEY_INCOMPLETE_ASYNC_ARRAY)) {
+            // String IncompleteAsyncArray = sp.getString(Utility.KEY_INCOMPLETE_ASYNC_ARRAY, "");
+            String IncompleteAsyncArray = Shared_Preference.getINCOMPLETE_ASYNC_ARRAY(context);
             try {
                 jsonArray = new JSONArray(IncompleteAsyncArray);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -1129,7 +1135,7 @@ public class Utility {
     }
 
 
-    public static void saveOverlapTimeSheetData(Context context, String jobId, String start_time, String end_time, String description, String code, String region, String status, String dayInfo, String jobType, String jobDesc, String Swo_Status, String JOB_ID_BILLABLE,String PausedTimeSheetId) {
+    public static void saveOverlapTimeSheetData(Context context, String jobId, String start_time, String end_time, String description, String code, String region, String status, String dayInfo, String jobType, String jobDesc, String Swo_Status, String JOB_ID_BILLABLE, String PausedTimeSheetId) {
         JSONArray jsonArray = new JSONArray();
         //  JSONObject final_jsonObject = new JSONObject();
 
@@ -1210,7 +1216,7 @@ public class Utility {
                     String pausedTimeSheetId = jsonObject1.getString("pausedTimeSheetId");
 
                     list.add(new OverlapTimesheet(uid, jobId, start_time, end_time, description,
-                            code, region, status, dayInfo, jobType, jobDesc, Swo_Status, jobIdBillable,pausedTimeSheetId));
+                            code, region, status, dayInfo, jobType, jobDesc, Swo_Status, jobIdBillable, pausedTimeSheetId));
 
 
                 }
@@ -1270,7 +1276,7 @@ public class Utility {
         SharedPreferences sp = context.getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
 
-        if (sp.contains(Utility.KEY_OVERLAP_TIMESHEET_ARRAY)) {
+        if (Shared_Preference.containsKey(context, Utility.KEY_OVERLAP_TIMESHEET_ARRAY)) {
             String IncompleteAsyncArray = sp.getString(Utility.KEY_OVERLAP_TIMESHEET_ARRAY, "");
             try {
                 jsonArray = new JSONArray(IncompleteAsyncArray);
@@ -1291,8 +1297,8 @@ public class Utility {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
 
-        ed.putBoolean(Utility.KEY_APP_LAUNCHED_FIRST_TIME, true).commit();//nks
-
+        //  ed.putBoolean(Utility.KEY_APP_LAUNCHED_FIRST_TIME, true).commit();//nks
+        Shared_Preference.setAPP_LAUNCHED_FIRST_TIME(context, true);
 
     }
 
@@ -1300,8 +1306,8 @@ public class Utility {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
 
-        ed.putBoolean(Utility.KEY_APP_LAUNCHED_FIRST_TIME, false).commit();//nks
-
+        //    ed.putBoolean(Utility.KEY_APP_LAUNCHED_FIRST_TIME, false).commit();//nks
+        Shared_Preference.setAPP_LAUNCHED_FIRST_TIME(context, false);
 
     }
 
@@ -1310,13 +1316,14 @@ public class Utility {
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean(Utility.KEY_APP_UPDATE_CHECKED, true).apply();//nks
     }
+
     public static void setAppUpdateNotChecked(Context context) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean(Utility.KEY_APP_UPDATE_CHECKED, false).apply();//nks
     }
 
-    public static void setLatestVersion(Context context,String ver) {
+    public static void setLatestVersion(Context context, String ver) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putString(Utility.KEY_APP_LATEST_VERSION, ver).apply();//nks
@@ -1339,7 +1346,7 @@ public class Utility {
 
     public static String getLatestVersion(Context context) {
         SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-        if(sp.contains(Utility.KEY_APP_LATEST_VERSION)){
+        if (sp.contains(Utility.KEY_APP_LATEST_VERSION)) {
             return sp.getString(Utility.KEY_APP_LATEST_VERSION, "0");
         } else return "0";
     }
@@ -1366,7 +1373,7 @@ public class Utility {
             Utility.setAppUpdateNotChecked(context);
             String version = Utility.getAppVersion(context);
             String LatestVersion = Utility.getLatestVersion(context);
-           // if (true) {
+            // if (true) {
             if (LatestVersion.equals(version)) {
                 appUpdated = true;
             }
@@ -1385,15 +1392,15 @@ public class Utility {
             checkedForUpdate = false;
         }
 
-      
 
         return checkedForUpdate;
 
     }
-    public static boolean isAppLaunchedFirstTime(Context context) {
-        SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-        return sp.getBoolean(Utility.KEY_APP_LAUNCHED_FIRST_TIME, false);
 
+    public static boolean isAppLaunchedFirstTime(Context context) {
+        // SharedPreferences sp = context.getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
+        //  sp.getBoolean(Utility.KEY_APP_LAUNCHED_FIRST_TIME, false);
+        return Shared_Preference.getAPP_LAUNCHED_FIRST_TIME(context);
 
     }
 
@@ -1410,8 +1417,6 @@ public class Utility {
         } catch (NullPointerException e) {
             e.getCause();
         }
-
-
 
 
     }
@@ -1483,7 +1488,7 @@ public class Utility {
         ss1.setSpan(new AbsoluteSizeSpan(40), 0, title.length(), SPAN_INCLUSIVE_INCLUSIVE);
 */
 
-        return    Html.fromHtml("<small>" + title+"</small>");
+        return Html.fromHtml("<small>" + title + "</small>");
 
     }
 
@@ -1660,6 +1665,23 @@ public class Utility {
         return str;
     }
 
+    public static String ChangeDateFormat(String inputPattern, String outputPattern, String time) {
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
     public static Boolean IsTimeAfter(String str_time1, String str_time2) {
         boolean isTimeAfter = false;
 
@@ -1810,4 +1832,208 @@ public class Utility {
         int i1 = r.nextInt(500000 - 10) + 10;
         return i1;
     }
+
+    public static String getCurrentdate(String DateFormat) {
+        String date = new
+                SimpleDateFormat(DateFormat,
+                Locale.getDefault()).format(new Date());
+        return date;
+    }
+
+    public static boolean isToDatebeforeFromDate(String fromDate, String toDate, String format) {
+
+        boolean isDate = false;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date _fromDate = sdf.parse(fromDate);
+            Date _toDate = sdf.parse(toDate);
+
+
+            if (_toDate.before(_fromDate)) {
+                isDate = true;
+            }
+
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return isDate;
+    }
+
+    public static boolean isToDateafterFromDate(String fromDate, String toDate, String format) {
+
+        boolean isDate = false;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date _fromDate = sdf.parse(fromDate);
+            Date _toDate = sdf.parse(toDate);
+
+
+            if (_toDate.after(_fromDate)) {
+                isDate = true;
+            }
+
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return isDate;
+    }
+
+    public static String getDayFromDate(String date, String format) {
+        Date dt1 = null;
+        try {
+            SimpleDateFormat format1 = new SimpleDateFormat(format, Locale.US);
+            dt1 = format1.parse(date);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return (String) DateFormat.format("EEEE", dt1);
+    }
+
+
+    public static String TrimString(String str, int str_length) {
+        String text = str;
+        if (text.length() > str_length) {
+            text = text.substring(0, str_length) + "...";
+        }
+        return text;
+    }
+
+    public static void animateTextview(final TextView textView, Context context) {
+
+       /* int colorFrom = context.getResources().getColor(R.color.textvw_value);
+        int colorTo = context.getResources().getColor(R.color.textvw_label);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(500); // milliseconds
+        colorAnimation.setRepeatCount(150);
+        colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                textView.setTextColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();*/
+
+
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(500); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        textView.startAnimation(anim);
+
+
+    }
+
+    public static void StopanimateTextview(final TextView textView, Context context) {
+
+       /* int colorFrom = context.getResources().getColor(R.color.textvw_value);
+        int colorTo = context.getResources().getColor(R.color.textvw_label);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(0); // milliseconds
+        colorAnimation.setRepeatCount(1);
+        colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                textView.setTextColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.cancel();*/
+
+        textView.clearAnimation();
+    }
+
+    public Document getDomElement(String xml) {
+        Document doc = null;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+
+            DocumentBuilder db = dbf.newDocumentBuilder();
+
+            InputSource is = new InputSource();
+            is.setCharacterStream(new StringReader(xml));
+            doc = db.parse(is);
+
+        } catch (ParserConfigurationException e) {
+            Log.e("Error: ", e.getMessage());
+            return null;
+        } catch (SAXException e) {
+            Log.e("Error: ", e.getMessage());
+            return null;
+        } catch (IOException e) {
+            Log.e("Error: ", e.getMessage());
+            return null;
+        }
+        // return DOM
+        return doc;
+    }
+
+
+    public String getValue(Element item, String str) {
+        NodeList n = item.getElementsByTagName(str);
+        return this.getElementValue(n.item(0));
+    }
+
+    public final String getElementValue(Node elem) {
+        Node child;
+        if (elem != null) {
+            if (elem.hasChildNodes()) {
+                for (child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
+                    if (child.getNodeType() == Node.TEXT_NODE) {
+                        return child.getNodeValue();
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
+    public static ArrayList<LaborCode> getNonBilableCodes(Context context) {
+        String nonBiilableCodes = Shared_Preference.getNON_BILLABLE_CODES(context);
+        ArrayList<LaborCode> listCodes = new ArrayList<>();
+        try {
+
+            JSONArray jsonArray = new JSONArray(nonBiilableCodes);
+            if (jsonArray != null && jsonArray.length() > 0) {
+                for (int k = 0; k < (jsonArray.length()); k++) {
+                    JSONObject json_obj = jsonArray.getJSONObject(k);
+                    String laborId = json_obj.getString("Lalor_ID_PK");
+                    String laborName = json_obj.getString("Labor_name");
+                    listCodes.add(new LaborCode(laborId, laborName));
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return listCodes;
+    }
+
+    public static JSONObject SoapObject_To_JsonObject(SoapObject soapObject){
+        String str=soapObject.toString();
+        str=  str.substring(str.indexOf("{")+1,str.indexOf("}"));
+        String ar[]=str.split(";");
+        JSONObject jsonObject = new JSONObject();
+        for(int i=0;i<ar.length;i++){
+          if(  ar[i]!=null && !ar[i].equals("")){
+              try {
+                  String rs[] = ar[i].split("=");
+                  jsonObject.put(rs[0].trim(), rs[1].trim());
+              }catch (Exception e){
+                  e.getMessage();
+              }
+              }
+        }
+        return jsonObject;
+    }
+
 }

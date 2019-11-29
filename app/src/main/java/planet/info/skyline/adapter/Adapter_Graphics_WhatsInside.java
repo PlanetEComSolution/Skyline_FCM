@@ -15,12 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import planet.info.skyline.FullscreenImageView;
+import planet.info.skyline.network.Api;
+import planet.info.skyline.network.SOAP_API_Client;
+import planet.info.skyline.tech.fullscreenview.FullscreenImageView;
 import planet.info.skyline.R;
-import planet.info.skyline.ShowWhatsInside_sub;
-import planet.info.skyline.util.Utility;
+import planet.info.skyline.tech.whats_inside.ShowWhatsInside_sub;
 
-import static planet.info.skyline.util.Utility.URL_EP1;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP1;
 
 
 public class Adapter_Graphics_WhatsInside extends BaseAdapter {
@@ -178,12 +179,12 @@ public class Adapter_Graphics_WhatsInside extends BaseAdapter {
                 String url="";
                 if(type.equalsIgnoreCase("Exhibit"))
                 {
-                    url=URL_EP1+"/graphics_other_crate.php?id="+mainAcc;
+                    url=URL_EP1+ Api.API_FETCH_EXHIBIT+mainAcc;
 
                 }
                 else if(type.equalsIgnoreCase("Accessory"))
                 {
-                    url=URL_EP1+"/graphics_other_crate_acc.php?id="+mainAcc;
+                    url=URL_EP1+Api.API_FETCH_ACCESSORY+mainAcc;
                 }
 
                 Intent i=new Intent(context, ShowWhatsInside_sub.class);
@@ -203,7 +204,7 @@ public class Adapter_Graphics_WhatsInside extends BaseAdapter {
 
                     String url = img_url;
                     url = url.replaceAll(Pattern.quote(".."), "");
-                    url = Utility.URL_EP1 + "/admin" + url;
+                    url = SOAP_API_Client.URL_EP1 + "/admin" + url;
                     Intent i = new Intent(context, FullscreenImageView.class);
                     i.putExtra("url", url);
                     context.startActivity(i);

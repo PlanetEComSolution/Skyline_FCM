@@ -57,5 +57,16 @@
        <!--nks-->
        <color name="icon_color">@color/colorAccent</color>
        <color name="path_color">#f0ad4e</color>
+       <color name="green_material">#26A69A</color>
+       <color name="red_material">#EF5350</color>
+       <color name="yellow_material">#BA68C8</color>
+       <color name="orange_material">#FFB74D</color>
+       <color name="teal_material">#4DB6AC</color>
+       <color name="green_material2">#43A047</color>
+
+       <color name="task_plan_row_bg">@android:color/transparent</color>
+       <color name="textvw_value">@android:color/tab_indicator_text</color>
+
+       <color name="textvw_label">@android:color/secondary_text_light</color>
 
 </resources>

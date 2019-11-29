@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="planet.info.skyline.NonBillable_List_Activity">
+    tools:context="planet.info.skyline.old_activity.NonBillable_List_Activity">
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="60dp"

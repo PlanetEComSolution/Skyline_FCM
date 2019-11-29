@@ -19,10 +19,11 @@ import android.widget.Toast;
 
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewManager;
-import planet.info.skyline.SubmitClockTime;
-import planet.info.skyline.NonBillable_jobs;
+import planet.info.skyline.tech.billable_timesheet.Clock_Submit_Type_Activity;
+import planet.info.skyline.tech.non_billable_timesheet.NonBillable_jobs;
 import planet.info.skyline.R;
 import planet.info.skyline.crash_report.ConnectionDetector;
+import planet.info.skyline.tech.shared_preference.Shared_Preference;
 import planet.info.skyline.util.Utility;
 
 
@@ -224,23 +225,20 @@ public class ChatHeadService extends Service implements FloatingViewListener {
     private void onClockClick() {
         if (new ConnectionDetector((getApplicationContext())).isConnectingToInternet()) {
             try {
-                SharedPreferences sp;
-                sp = getApplicationContext().getSharedPreferences("skyline", MODE_PRIVATE);
-
-                boolean isTimerRunningFromAdminClockModule = sp.getBoolean(Utility.TIMER_STARTED_FROM_ADMIN_CLOCK_MODULE, false);
+                boolean isTimerRunningFromAdminClockModule = Shared_Preference.getTIMER_STARTED_FROM_ADMIN_CLOCK_MODULE(this);
                 if (isTimerRunningFromAdminClockModule) {
                     try {
                         Intent intent = new Intent(getApplicationContext(), NonBillable_jobs.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                     //   intent.putExtra(Utility.FROM_CLOCK,true);
                         startActivity(intent);
-                        Log.d(TAG, getString(R.string.chathead_click_message));
                     } catch (Exception e) {
                         e.getMessage();
                     }
 
                 } else {
                     try {
-                        Intent in = new Intent(getApplicationContext(), SubmitClockTime.class);
+                        Intent in = new Intent(getApplicationContext(), Clock_Submit_Type_Activity.class);
                         in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         getApplicationContext().startActivity(in);

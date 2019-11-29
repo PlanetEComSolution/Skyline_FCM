@@ -94,17 +94,18 @@ import java.util.regex.Pattern;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import planet.info.skyline.AppConstants;
-import planet.info.skyline.CustomMultiPartEntity;
+import planet.info.skyline.network.REST_API_Client;
+import planet.info.skyline.old_activity.AppConstants;
+import planet.info.skyline.old_activity.CustomMultiPartEntity;
 import planet.info.skyline.R;
-import planet.info.skyline.Upload_image_and_cooment;
 import planet.info.skyline.adapter.CompanyNameAdapter;
 import planet.info.skyline.crash_report.ConnectionDetector;
 import planet.info.skyline.model.Job;
 import planet.info.skyline.model.Myspinner_timezone;
 import planet.info.skyline.model.ProjectPhoto;
-import planet.info.skyline.retrofit_multipart.ApiService;
-import planet.info.skyline.retrofit_multipart.ProgressRequestBody;
+import planet.info.skyline.network.API_Interface;
+import planet.info.skyline.network.ProgressRequestBody;
+import planet.info.skyline.tech.shared_preference.Shared_Preference;
 import planet.info.skyline.util.CameraUtils;
 import planet.info.skyline.util.Utility;
 import retrofit2.Call;
@@ -112,8 +113,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_AllRecentlyUuploadedFiles;
+import static planet.info.skyline.network.Api.API_BindJob;
+import static planet.info.skyline.network.Api.API_saveclientFileByClient;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 //import com.aditya.filebrowser.Constants;
 //import com.aditya.filebrowser.FileChooser;
@@ -158,7 +162,7 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
     private MoviesAdapter mAdapter;
     ProgressDialog uploadProgressDialog;
     int Count_Image_Uploaded = 0;
-    ApiService apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,8 +253,8 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "BindJob";
-        final String METHOD_NAME = "BindJob";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_BindJob;
+        final String METHOD_NAME =API_BindJob;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("ClientID", comp_ID);
 
@@ -350,8 +354,8 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "AllRecentlyUuploadedFiles";
-        final String METHOD_NAME = "AllRecentlyUuploadedFiles";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_AllRecentlyUuploadedFiles;
+        final String METHOD_NAME = API_AllRecentlyUuploadedFiles;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("clientUserID", Client_id_Pk);//
@@ -1135,8 +1139,10 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
         Button Btn_Back = (Button) dialog_image.findViewById(R.id.Btn_Back);
 
 
-        String clid = sp.getString("clientid", "");
-        String name = sp.getString("tname", "");
+       // String clid = sp.getString("clientid", "");
+        String clid = Shared_Preference.getLOGIN_USER_ID(this);
+       // String name = sp.getString("tname", "");
+        String name = Shared_Preference.getLOGIN_USERNAME(ClientFilesActivity.this);
         //nks
 
 
@@ -1338,8 +1344,8 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
         String UploadedPhotoID = "";
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "saveclientFileByClient";
-        final String METHOD_NAME = "saveclientFileByClient";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_saveclientFileByClient;
+        final String METHOD_NAME = API_saveclientFileByClient;
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("CompID", CompID);
@@ -2172,7 +2178,7 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
         uploadProgressDialog.setCancelable(false);
         uploadProgressDialog.show();
 
-        initRetrofitClient();
+      //  initRetrofitClient();
 
         try {
             /**/
@@ -2189,7 +2195,11 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
             String jid = list_ImageDescData.get(0).get(Utility.KEY_Jobid_or_swoid);
             String url = URL_EP2 + "/UploadFileHandler.ashx?jid=" + jid;
             /**/
-            Call<ResponseBody> req = apiService.uploadMedia(surveyImagesParts, url);
+
+
+            API_Interface APIInterface = REST_API_Client.getClient().create(API_Interface.class);
+
+            Call<ResponseBody> req = APIInterface.uploadMedia(surveyImagesParts, url);
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -2246,18 +2256,18 @@ public class ClientFilesActivity extends AppCompatActivity implements ProgressRe
         }
     }
 
-    private void initRetrofitClient() {
+  /*  private void initRetrofitClient() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(100, TimeUnit.SECONDS)
                 .writeTimeout(1000, TimeUnit.SECONDS)
                 .build();
         try {
-            apiService = new Retrofit.Builder().baseUrl(URL_EP2).client(client).build().create(ApiService.class);
+            APIInterface = new Retrofit.Builder().baseUrl(URL_EP2).client(client).build().create(API_Interface.class);
         } catch (Exception e) {
             e.getMessage();
         }
-    }
+    }*/
 
     @Override
     public void onProgressUpdate(int percentage) {

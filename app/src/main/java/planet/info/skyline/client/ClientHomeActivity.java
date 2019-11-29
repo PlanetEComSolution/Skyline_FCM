@@ -31,13 +31,15 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import planet.info.skyline.LoginActivity;
+import planet.info.skyline.home.LoginActivity;
 import planet.info.skyline.R;
 import planet.info.skyline.crash_report.ConnectionDetector;
+import planet.info.skyline.network.SOAP_API_Client;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_GetClientNotification;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 public class ClientHomeActivity extends AppCompatActivity implements View.OnClickListener {
     AlertDialog alertDialog;
@@ -145,7 +147,7 @@ public class ClientHomeActivity extends AppCompatActivity implements View.OnClic
         // client_logo.set
 
         String imgeName = sp.getString(Utility.CLIENT_LOGIN_Imagepath, "");
-        String imagePath = Utility.URL_EP2 + "/register/Client_logo/" + imgeName;
+        String imagePath = SOAP_API_Client.URL_EP2 + "/register/Client_logo/" + imgeName;
         Glide
                 .with(context)
                 .load(imagePath)
@@ -358,8 +360,8 @@ public class ClientHomeActivity extends AppCompatActivity implements View.OnClic
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "GetClientNotification";
-        final String METHOD_NAME = "GetClientNotification";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_GetClientNotification;
+        final String METHOD_NAME =API_GetClientNotification;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("ClientUserId", comp_ID);//

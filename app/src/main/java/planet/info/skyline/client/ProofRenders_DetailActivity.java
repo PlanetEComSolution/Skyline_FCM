@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -54,10 +53,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import planet.info.skyline.FullscreenImageView;
-import planet.info.skyline.FullscreenWebView;
+import planet.info.skyline.tech.fullscreenview.FullscreenImageView;
+import planet.info.skyline.tech.fullscreenview.FullscreenWebView;
 import planet.info.skyline.R;
-import planet.info.skyline.controller.AppController;
 import planet.info.skyline.crash_report.ConnectionDetector;
 //import planet.info.skyline.httpimage.HttpImageManager;
 import planet.info.skyline.model.ProjectPhoto;
@@ -65,8 +63,12 @@ import planet.info.skyline.model.ProjectPhotoComment;
 import planet.info.skyline.util.FileDownloader;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_SendProofMailtoGuestByClient;
+import static planet.info.skyline.network.Api.API_ShowProofRender;
+import static planet.info.skyline.network.Api.API_UpdateProofRenderStatusByClient;
+import static planet.info.skyline.network.Api.API_ViewCommentsByProof;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 import static planet.info.skyline.util.Utility.isValidEmail;
 
 public class ProofRenders_DetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -516,8 +518,8 @@ public class ProofRenders_DetailActivity extends AppCompatActivity implements Da
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "UpdateProofRenderStatusByClient";
-        final String METHOD_NAME = "UpdateProofRenderStatusByClient";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_UpdateProofRenderStatusByClient;
+        final String METHOD_NAME = API_UpdateProofRenderStatusByClient;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("nu_client_id", Client_id_Pk);//Client_id_Pk
@@ -556,8 +558,8 @@ public class ProofRenders_DetailActivity extends AppCompatActivity implements Da
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "SendProofMailtoGuestByClient";
-        final String METHOD_NAME = "SendProofMailtoGuestByClient";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_SendProofMailtoGuestByClient;
+        final String METHOD_NAME = API_SendProofMailtoGuestByClient;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("jobid", jobID);
@@ -620,8 +622,8 @@ public class ProofRenders_DetailActivity extends AppCompatActivity implements Da
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "ShowProofRender";
-        final String METHOD_NAME = "ShowProofRender";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ShowProofRender;
+        final String METHOD_NAME = API_ShowProofRender;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("ClientUserID", Client_id_Pk);
         request.addProperty("jobID", jobID);
@@ -811,8 +813,8 @@ public class ProofRenders_DetailActivity extends AppCompatActivity implements Da
         list_ProjectPhotoComment.clear();
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "ViewCommentsByProof";
-        final String METHOD_NAME = "ViewCommentsByProof";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_ViewCommentsByProof;
+        final String METHOD_NAME = API_ViewCommentsByProof;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("fileID", FileId);
         request.addProperty("job", jobID);

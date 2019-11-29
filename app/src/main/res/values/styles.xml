@@ -113,12 +113,13 @@
 
     </style>
     <style name="CustomTextView_text">
-        <!--<item name="android:textColor">#A85E4F</item>-->
+      <item name="android:textColor">@android:color/tab_indicator_text</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
         <item name="android:layout_weight">.5</item>
-
     </style>
+
+    <!--  <item name="android:textColor">@color/primaryTextColor</item>-->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="Theme_Dialog" parent="android:Theme.Holo.Dialog">

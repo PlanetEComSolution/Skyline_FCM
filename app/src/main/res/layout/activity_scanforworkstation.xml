@@ -9,6 +9,6 @@
     android:background="@color/home_bg_color"
 android:focusableInTouchMode="true"
 
-    tools:context=".Scanforworkstation" >
+    tools:context=".tech.billable_timesheet.SubmitTimesheet" >
 
 </RelativeLayout>

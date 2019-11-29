@@ -31,7 +31,8 @@
                 android:clickable="true"
                 android:orientation="vertical"
                 android:padding="10dp">
-                               <Button
+
+                <Button
                     android:id="@+id/Btn_MySwo"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -43,6 +44,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/btn_text_sky_blue"
                     android:textSize="@dimen/headers" />
+
                 <Button
                     android:id="@+id/Btn_UnassignedSwo"
                     android:layout_width="match_parent"
@@ -103,10 +105,10 @@
                     android:id="@+id/scan"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/round_corner_btn2_new"
                     android:gravity="center"
                     android:text="Scan QR Code"
-                    android:layout_marginTop="5dp"
                     android:textAllCaps="false"
                     android:textAppearance="?android:attr/textAppearanceMedium"
 

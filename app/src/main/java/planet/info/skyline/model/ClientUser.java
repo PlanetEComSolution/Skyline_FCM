@@ -5,6 +5,7 @@ public class ClientUser {
     String txt_Mail;
     String Id_Pk;
     String int_client_id;
+    String MasterStatus;
 
     public boolean isChecked() {
         return isChecked;
@@ -53,12 +54,21 @@ public class ClientUser {
 
 
 
-    public ClientUser(String ename, String txt_Mail, String id_Pk, String int_client_id, boolean isChecked) {
+    public ClientUser(String ename, String txt_Mail, String id_Pk, String int_client_id, boolean isChecked,String MasterStatus) {
         this.ename = ename;
         this.txt_Mail = txt_Mail;
         this.  Id_Pk = id_Pk;
         this.int_client_id = int_client_id;
         this.isChecked =isChecked;
+        this.MasterStatus =  MasterStatus;
+    }
+
+    public String getMasterStatus() {
+        return MasterStatus;
+    }
+
+    public void setMasterStatus(String masterStatus) {
+        MasterStatus = masterStatus;
     }
 
     @Override

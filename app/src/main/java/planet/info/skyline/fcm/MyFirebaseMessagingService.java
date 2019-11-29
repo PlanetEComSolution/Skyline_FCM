@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,12 +19,14 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import planet.info.skyline.MainActivity;
+import planet.info.skyline.home.MainActivity;
 import planet.info.skyline.R;
+import planet.info.skyline.tech.shared_preference.Shared_Preference;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -44,10 +45,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String s) {
         super.onNewToken(s);
         Log.e("NEW_TOKEN", s);
-        SharedPreferences sp = this.getSharedPreferences("skyline", MODE_PRIVATE);
+      /*  SharedPreferences sp = this.getSharedPreferences("skyline", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
-        ed.putString(Utility.FCM_TOKEN, s).apply();
-        String empId = sp.getString("clientid", "");
+        ed.putString(Utility.FCM_TOKEN, s).apply();*/
+
+        Shared_Preference.setFCM_TOKEN(this,s);
+
+       // String empId = sp.getString("clientid", "");
+
+        String empId =    Shared_Preference.getLOGIN_USER_ID(this);
+
         try {
             if (!empId.equals("")) {
                 new async_updateToken().execute();
@@ -72,6 +79,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.exhibit_power_logo_white)
                 .setSound(soundUri)
+                .setChannelId("my_channel_id_0001") // set channel id
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
@@ -80,14 +88,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public void UpdateTokenOnServer() {
-        SharedPreferences sp = this.getSharedPreferences("skyline", MODE_PRIVATE);
-        String empId = sp.getString("clientid", "");
-        String fcm_token = sp.getString(Utility.FCM_TOKEN, "");
+       // SharedPreferences sp = this.getSharedPreferences("skyline", MODE_PRIVATE);
+        String empId =    Shared_Preference.getLOGIN_USER_ID(this);
+     //   String fcm_token = sp.getString(Utility.FCM_TOKEN, "");
+
+        String fcm_token =   Shared_Preference.getFCM_TOKEN(this);
 
         final String NAMESPACE = KEY_NAMESPACE;
         final String URL = urlofwebservice;
-        final String SOAP_ACTION = KEY_NAMESPACE + "GetAuthTimeSheet";
-        final String METHOD_NAME = "GetAuthTimeSheet";
+        final String SOAP_ACTION = KEY_NAMESPACE + "";
+        final String METHOD_NAME = "";
         // Create SOAP request
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -127,7 +137,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         @Override
         protected Void doInBackground(Void... params) {
             // TODO Auto-generated method stub
-            UpdateTokenOnServer();
+           // UpdateTokenOnServer();
             return null;
         }
 

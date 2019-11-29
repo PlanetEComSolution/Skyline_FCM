@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/home_bg_color"
-    tools:context=".Upload_image_and_cooment"
+    tools:context=".tech.upload_photo.Upload_image_and_cooment"
     >
 
 </RelativeLayout>

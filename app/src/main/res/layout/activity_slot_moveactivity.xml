@@ -3,6 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/home_bg_color"
-    tools:context=".SlotMoveactivity" >
+    tools:context=".tech.material_move.SlotMoveactivity" >
 
 </RelativeLayout>

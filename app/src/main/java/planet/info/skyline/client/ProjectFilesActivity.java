@@ -32,7 +32,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,7 +46,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,7 +64,6 @@ import java.util.List;
 
 import planet.info.skyline.R;
 import planet.info.skyline.adapter.CompanyNameAdapter;
-import planet.info.skyline.controller.AppController;
 import planet.info.skyline.crash_report.ConnectionDetector;
 //import planet.info.skyline.httpimage.HttpImageManager;
 import planet.info.skyline.model.Job;
@@ -74,8 +71,10 @@ import planet.info.skyline.model.Myspinner_timezone;
 import planet.info.skyline.model.ProjectPhoto;
 import planet.info.skyline.util.Utility;
 
-import static planet.info.skyline.util.Utility.KEY_NAMESPACE;
-import static planet.info.skyline.util.Utility.URL_EP2;
+import static planet.info.skyline.network.Api.API_BindJob;
+import static planet.info.skyline.network.Api.API_GetProjectFileforClient;
+import static planet.info.skyline.network.SOAP_API_Client.KEY_NAMESPACE;
+import static planet.info.skyline.network.SOAP_API_Client.URL_EP2;
 
 public class ProjectFilesActivity extends AppCompatActivity {
 
@@ -176,8 +175,8 @@ public class ProjectFilesActivity extends AppCompatActivity {
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "BindJob";
-        final String METHOD_NAME = "BindJob";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_BindJob;
+        final String METHOD_NAME = API_BindJob;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("ClientID", comp_ID);
 
@@ -271,8 +270,8 @@ public class ProjectFilesActivity extends AppCompatActivity {
 
         final String NAMESPACE = KEY_NAMESPACE + "";
         final String URL = URL_EP2 + "/WebService/techlogin_service.asmx";
-        final String SOAP_ACTION = KEY_NAMESPACE + "GetProjectFileforClient";
-        final String METHOD_NAME = "GetProjectFileforClient";
+        final String SOAP_ACTION = KEY_NAMESPACE + API_GetProjectFileforClient;
+        final String METHOD_NAME = API_GetProjectFileforClient;
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("Job_id", jobID);
         request.addProperty("id_pk", "");
